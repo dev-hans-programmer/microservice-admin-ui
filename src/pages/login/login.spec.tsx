@@ -12,6 +12,17 @@ describe('Login Page', () => {
       //Render the component
       render(<LoginPage />);
 
-      expect(screen.getByText(/Login Page/)).toBeInTheDocument();
+      expect(
+         screen.getByRole('heading', { name: /login page/i })
+      ).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/username/i));
+      expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+      expect(
+         screen.getByRole('button', { name: /sign in/i })
+      ).toBeInTheDocument();
+
+      expect(
+         screen.getByRole('checkbox', { name: /remember me/i })
+      ).toBeInTheDocument();
    });
 });
