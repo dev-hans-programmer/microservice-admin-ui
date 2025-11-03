@@ -35,25 +35,29 @@ function LoginPage() {
    }
 
    return (
-      <Layout className='LoginPage'>
+      <Layout className='login-page'>
          <Space direction='vertical' align='center' size='large'>
-            <Layout.Content className='layout-content'>
+            <Layout.Content className='login-page__header'>
                <Logo />
             </Layout.Content>
             <Card
                variant='borderless'
-               className='card'
+               className='login-page__card'
                title={
-                  <Space className='space'>
+                  <Space className='login-page__title-space'>
                      <LockFilled />
                      Sign In
                   </Space>
                }
             >
-               <Form initialValues={{ remember: true }} onFinish={onSubmit}>
+               <Form
+                  className='login-page__form'
+                  initialValues={{ remember: true }}
+                  onFinish={onSubmit}
+               >
                   {isError && (
                      <Alert
-                        className='error-alert'
+                        className='login-page__alert'
                         type='error'
                         message={getErrorMessage(error)}
                      />
@@ -62,14 +66,12 @@ function LoginPage() {
                   <Form.Item
                      name='email'
                      rules={[
-                        {
-                           required: true,
-                           message: 'Please input your email',
-                        },
+                        { required: true, message: 'Please input your email' },
                      ]}
                   >
                      <Input prefix={<UserOutlined />} placeholder='Email' />
                   </Form.Item>
+
                   <Form.Item
                      name='password'
                      rules={[
@@ -84,18 +86,22 @@ function LoginPage() {
                         placeholder='Password'
                      />
                   </Form.Item>
-                  <Flex justify='space-between'>
+
+                  <Flex
+                     justify='space-between'
+                     className='login-page__footer-row'
+                  >
                      <Form.Item name='remember' valuePropName='checked'>
                         <Checkbox>Remember Me</Checkbox>
                      </Form.Item>
-                     <a id='forgot-password-link' href=''>
+                     <a className='login-page__forgot' href=''>
                         Forgot password?
                      </a>
                   </Flex>
 
                   <Form.Item>
                      <Button
-                        style={{ width: '100%' }}
+                        className='login-page__submit'
                         type='primary'
                         htmlType='submit'
                         loading={isPending}

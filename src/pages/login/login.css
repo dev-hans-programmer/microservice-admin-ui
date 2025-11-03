@@ -1,4 +1,90 @@
-.LoginPage {
+/*
+  BEM-style stylesheet for Login Page
+  - Block: .login-page
+  - Elements: __header, __card, __form, __alert, __submit, etc.
+
+  Notes:
+  - Keep selectors shallow to avoid specificity wars.
+  - Use small set of custom properties for quick theming.
+  - Keep responsive rules minimal and predictable.
+*/
+
+:root {
+  --login-max-width: 420px;
+  --login-gap: 24px;
+  --login-padding: 24px;
+  --login-bg: var(--ant-bg-layout, #f5f7fa);
+  --card-radius: 8px;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--login-padding);
+  background: var(--login-bg);
+}
+
+.login-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.login-page__card {
+  width: 100%;
+  max-width: var(--login-max-width);
+  border-radius: var(--card-radius);
+  box-shadow: 0 6px 24px rgba(20, 20, 40, 0.06);
+}
+
+.login-page__title-space {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.login-page__form {
+  padding-top: 8px;
+}
+
+.login-page__form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.login-page__alert {
+  margin-bottom: 12px;
+}
+
+.login-page__footer-row {
+  align-items: center;
+}
+
+.login-page__forgot {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+}
+
+.login-page__submit {
+  width: 100%;
+}
+
+/* Small screens: card fills most of the width */
+@media (max-width: 480px) {
+  .login-page__card {
+    max-width: calc(100% - 32px);
+  }
+}
+
+/* Focus styles for accessibility */
+.login-page :where(.ant-input:focus, .ant-input-affix-wrapper-focused, .ant-btn:focus) {
+  outline: 3px solid rgba(24, 144, 255, 0.12);
+  outline-offset: 2px;
+}
+/* .LoginPage {
     height: 100vh;
     display: grid;
     place-items: center;
@@ -20,4 +106,4 @@
      display: flex;
      align-items:center;
      justify-content:center
-}
+} */
