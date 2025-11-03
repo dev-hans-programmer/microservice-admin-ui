@@ -11,10 +11,11 @@ import {
 } from 'antd';
 import { LockFilled, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Logo from '../../components/icons/logo';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { Credentials } from '../../types';
 import { getErrorMessage } from '../../utils/response';
-import { login } from '../../http/auth';
+import { login, self } from '../../http/auth';
+import { useAuthStore } from '../../store';
 
 import './login.css';
 
@@ -23,10 +24,29 @@ async function loginUser(payload: Credentials) {
    return data;
 }
 
+async function getSelf() {
+   const { data } = await self();
+   return data;
+}
+
 function LoginPage() {
+   const { setAuthUser } = useAuthStore();
+
+   // By defaut it will not call this api, after calling refetch
+   // it will call this endpoint
+   const { refetch } = useQuery({
+      queryKey: ['self'],
+      queryFn: getSelf,
+      enabled: false,
+   });
+
    const { isPending, error, isError, mutate } = useMutation({
       mutationKey: ['login'],
       mutationFn: loginUser,
+      onSuccess: async () => {
+         const userData = await refetch();
+         setAuthUser(userData.data);
+      },
    });
 
    function onSubmit(values: Credentials) {
