@@ -1,0 +1,23 @@
+.LoginPage {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.LoginPage .error-alert {
+    margin-bottom: 20px;
+}
+.LoginPage .card {
+    width: 300px;
+}
+.LoginPage .card .space {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.LoginPage .layout-content {
+     display: flex;
+     align-items:center;
+     justify-content:center
+}

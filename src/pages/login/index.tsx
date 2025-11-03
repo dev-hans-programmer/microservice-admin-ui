@@ -1,52 +1,74 @@
-import { Button, Card, Checkbox, Flex, Form, Input, Layout, Space } from 'antd';
+import {
+   Alert,
+   Button,
+   Card,
+   Checkbox,
+   Flex,
+   Form,
+   Input,
+   Layout,
+   Space,
+} from 'antd';
 import { LockFilled, LockOutlined, UserOutlined } from '@ant-design/icons';
 import Logo from '../../components/icons/logo';
+import { useMutation } from '@tanstack/react-query';
+import type { Credentials } from '../../types';
+import { getErrorMessage } from '../../utils/response';
+import { login } from '../../http/auth';
+
+import './login.css';
+
+async function loginUser(payload: Credentials) {
+   const { data } = await login(payload);
+   return data;
+}
 
 function LoginPage() {
+   const { isPending, error, isError, mutate } = useMutation({
+      mutationKey: ['login'],
+      mutationFn: loginUser,
+   });
+
+   function onSubmit(values: Credentials) {
+      console.log(values);
+      mutate(values);
+   }
+
    return (
-      <Layout
-         style={{ height: '100vh', display: 'grid', placeItems: 'center' }}
-      >
+      <Layout className='LoginPage'>
          <Space direction='vertical' align='center' size='large'>
-            <Layout.Content
-               style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-            >
+            <Layout.Content className='layout-content'>
                <Logo />
             </Layout.Content>
             <Card
                variant='borderless'
-               style={{
-                  width: 300,
-               }}
+               className='card'
                title={
-                  <Space
-                     style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                     }}
-                  >
+                  <Space className='space'>
                      <LockFilled />
                      Sign In
                   </Space>
                }
             >
-               <Form initialValues={{ remember: true }}>
+               <Form initialValues={{ remember: true }} onFinish={onSubmit}>
+                  {isError && (
+                     <Alert
+                        className='error-alert'
+                        type='error'
+                        message={getErrorMessage(error)}
+                     />
+                  )}
+
                   <Form.Item
-                     name='username'
+                     name='email'
                      rules={[
                         {
                            required: true,
-                           message: 'Please input your username',
+                           message: 'Please input your email',
                         },
                      ]}
                   >
-                     <Input prefix={<UserOutlined />} placeholder='Username' />
+                     <Input prefix={<UserOutlined />} placeholder='Email' />
                   </Form.Item>
                   <Form.Item
                      name='password'
@@ -76,6 +98,7 @@ function LoginPage() {
                         style={{ width: '100%' }}
                         type='primary'
                         htmlType='submit'
+                        loading={isPending}
                      >
                         Log In
                      </Button>
